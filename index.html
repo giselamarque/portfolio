@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gisela Marquez</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --coral:#FF6F61;--purple:#6B5B95;--green:#88B04B;
+  --blush:#F7CAC9;--blue:#92A8D1;--ink:#1a0a0a;--paper:#F8FBF2;
+  --gold:#C9A96E;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:#1a2610;font-family:'Cormorant Garamond',serif;}
+
+.scene{
+  width:100vw;height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 40% 50%,#2a3d1a 0%,#1e2d0f 40%,#1a0f2e 100%);
+  position:relative;
+  overflow:hidden;
+}
+/* ambient blobs */
+.scene::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:rgba(107,91,149,0.12);top:-100px;left:-100px;pointer-events:none;}
+.scene::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(136,176,75,0.12);bottom:-120px;right:-60px;pointer-events:none;}
+
+/* BOOK */
+.book{
+  width:1060px;height:680px;
+  display:flex;
+  position:relative;
+  filter:drop-shadow(0 40px 80px rgba(0,0,0,0.9));
+}
+
+/* NAV — floats above book as sleek pill */
+.nav{
+  position:absolute;
+  top:-52px;left:50%;transform:translateX(-50%);
+  display:flex;
+  background:rgba(88,130,40,0.25);
+  border:1px solid rgba(136,176,75,0.3);
+  border-radius:100px;
+  overflow:hidden;
+  z-index:200;
+  backdrop-filter:blur(12px);
+}
+.nav-btn{
+  padding:0.55rem 2rem;
+  font-family:'DM Mono',monospace;
+  font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;
+  border:none;cursor:pointer;
+  background:transparent;
+  color:rgba(200,232,154,0.5);
+  transition:all 0.3s;
+  position:relative;
+}
+.nav-btn::after{
+  content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:0;height:1.5px;background:var(--green);transition:width 0.3s;
+}
+.nav-btn.active{color:#c8e89a;}
+.nav-btn.active::after{width:60%;}
+.nav-btn:hover{color:rgba(200,232,154,0.85);}
+
+/* ── LEFT PANEL ── */
+.book-left{
+  width:530px;height:680px;
+  position:relative;
+  flex-shrink:0;
+  border-radius:4px 0 0 4px;
+}
+
+/* SPINE */
+.spine{
+  width:18px;height:680px;
+  background:linear-gradient(to right,#1a2e10,#2d3d1a,#1a2e10);
+  flex-shrink:0;
+  position:relative;z-index:30;
+  display:flex;align-items:center;justify-content:center;
+}
+.spine::before,.spine::after{
+  content:'';position:absolute;
+  left:0;right:0;height:1px;
+  background:rgba(136,176,75,0.35);
+}
+.spine::before{top:40px;}
+.spine::after{bottom:40px;}
+.spine-text{
+  font-family:'DM Mono',monospace;
+  font-size:0.42rem;letter-spacing:0.35em;text-transform:uppercase;
+  color:rgba(136,176,75,0.55);
+  writing-mode:vertical-rl;white-space:nowrap;
+}
+
+/* ── RIGHT PANEL ── */
+.book-right{
+  width:512px;height:680px;
+  position:relative;
+  border-radius:0 4px 4px 0;
+  overflow:hidden;
+  flex-shrink:0;
+}
+
+/* COVER — dark luxury */
+.cover{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#1e3a12 0%,#2d1f3d 60%,#1a2e10 100%);
+  display:flex;flex-direction:column;
+  align-items:flex-start;justify-content:flex-end;
+  padding:3.5rem;
+  border-radius:4px 0 0 4px;
+  overflow:hidden;
+}
+.cover-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(136,176,75,0.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(136,176,75,0.07) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.cover-accent{
+  position:absolute;top:0;right:0;
+  width:280px;height:280px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(136,176,75,0.25) 0%,transparent 70%);
+}
+.cover-accent2{
+  position:absolute;bottom:60px;left:-60px;
+  width:200px;height:200px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(136,176,75,0.18) 0%,transparent 70%);
+}
+.cover-line{
+  position:absolute;top:3.5rem;left:3.5rem;right:3.5rem;
+  height:1px;background:linear-gradient(to right,rgba(136,176,75,0.6),transparent);
+}
+.cover-year{
+  position:absolute;top:3.5rem;right:3.5rem;
+  font-family:'DM Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.2em;
+  color:rgba(247,202,201,0.45);
+}
+.cover-monogram{
+  font-family:'Cormorant Garamond',serif;
+  font-size:9rem;font-weight:300;font-style:italic;
+  color:rgba(247,202,201,0.08);
+  position:absolute;top:60px;left:50%;transform:translateX(-50%);
+  line-height:1;pointer-events:none;user-select:none;
+  white-space:nowrap;
+}
+.cover-tag{
+  font-family:'DM Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--green);margin-bottom:1rem;
+  display:flex;align-items:center;gap:0.8rem;
+}
+.cover-tag::before{content:'';width:24px;height:1px;background:var(--green);}
+.cover-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.8rem;font-weight:300;
+  color:#F7CAC9;line-height:0.95;
+  margin-bottom:0.2rem;
+}
+.cover-name em{font-style:italic;color:var(--coral);}
+.cover-rule{width:60px;height:1px;background:var(--green);margin:1.2rem 0;}
+.cover-sub{
+  font-family:'DM Mono',monospace;
+  font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(247,202,201,0.45);
+  line-height:1.8;
+}
+
+/* BACK COVER */
+.back-cover{
+  position:absolute;inset:0;
+  background:#1a2e10;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.back-cover::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(136,176,75,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(136,176,75,0.06) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.back-cover-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:7rem;font-weight:300;font-style:italic;
+  color:rgba(136,176,75,0.08);line-height:1;user-select:none;
+  position:relative;z-index:1;
+}
+
+/* LEFT INNER PAGES */
+.left-inner{
+  display:none;
+  position:absolute;inset:0;z-index:25;
+  width:530px;height:680px;
+  border-radius:4px 0 0 4px;
+  overflow:hidden;
+}
+.left-inner.show{display:block;}
+
+/* PAGE BACKGROUND — clean warm white */
+.pg{
+  width:100%;height:100%;
+  background:var(--paper);
+  position:relative;overflow:hidden;
+}
+/* subtle vertical lines like a premium notebook */
+.pg::before{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(
+    transparent,transparent 31px,
+    rgba(60,100,20,0.04) 31px,rgba(60,100,20,0.04) 32px
+  );
+  pointer-events:none;z-index:0;
+}
+.pg::after{
+  content:'';position:absolute;top:0;left:64px;
+  width:1px;height:100%;
+  background:rgba(255,111,97,0.15);z-index:0;
+}
+.pi{position:relative;z-index:1;padding:2.2rem 2.5rem 2rem 2.6rem;height:100%;overflow:hidden;}
+
+/* right page shadow */
+.page-sheet .page-front::before{
+  content:'';position:absolute;left:0;top:0;width:22px;height:100%;
+  background:linear-gradient(to right,rgba(0,0,0,0.1),transparent);
+  z-index:10;pointer-events:none;
+}
+
+/* PAGE SHEETS */
+.pages-stack{position:absolute;inset:0;}
+.page-sheet{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;transition:transform 0.75s cubic-bezier(0.77,0,0.175,1);}
+.page-front,.page-back{position:absolute;inset:0;backface-visibility:hidden;overflow:hidden;}
+.page-back{transform:rotateY(180deg);background:var(--paper);}
+.page-sheet.flipped{transform:rotateY(-180deg);}
+
+/* SHARED TYPOGRAPHY */
+.sec-eyebrow{
+  font-family:'DM Mono',monospace;
+  font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--green);margin-bottom:0.3rem;
+  display:flex;align-items:center;gap:0.7rem;
+}
+.sec-eyebrow::before{content:'';width:20px;height:1px;background:var(--green);}
+.sec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.4rem;font-weight:300;font-style:italic;
+  color:var(--ink);line-height:1;margin-bottom:0.8rem;
+}
+.sec-rule{height:1px;background:linear-gradient(to right,var(--green),rgba(136,176,75,0.2),transparent);margin-bottom:1rem;}
+
+.pg-num{
+  position:absolute;bottom:1.2rem;
+  font-family:'DM Mono',monospace;
+  font-size:0.55rem;color:rgba(60,100,20,0.3);letter-spacing:0.12em;
+}
+.pg-l{left:2.6rem;}.pg-r{right:2.5rem;}
+
+/* ABOUT */
+.big-quote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;font-style:italic;font-weight:300;
+  color:var(--purple);line-height:1.7;
+  padding:0.7rem 1rem;
+  border-left:2px solid var(--green);
+  background:rgba(107,91,149,0.05);
+  margin-bottom:1rem;
+}
+.body{font-size:0.8rem;line-height:1.95;color:rgba(26,10,10,0.65);margin-bottom:0.65rem;font-weight:400;}
+.fact-row{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-top:1rem;}
+.fact{padding:0.5rem 0.7rem;border-left:2px solid var(--green);}
+.fact-k{font-family:'DM Mono',monospace;font-size:0.52rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);}
+.fact-v{font-size:0.78rem;font-style:italic;color:var(--ink);margin-top:0.1rem;}
+
+/* RESUME LEFT */
+.hl-intro{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.9rem;font-style:italic;
+  color:var(--purple);line-height:1.75;
+  padding:0.6rem 0.9rem;
+  border-left:2px solid var(--green);
+  background:rgba(247,202,201,0.08);
+  margin-bottom:1rem;
+}
+.hl{display:flex;align-items:baseline;gap:0.7rem;margin-bottom:0.55rem;}
+.hl-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;position:relative;top:-1px;}
+.hl-text{font-size:0.78rem;color:rgba(26,10,10,0.68);font-style:italic;line-height:1.5;}
+
+/* RESUME RIGHT */
+.r2col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.col-label{
+  font-family:'DM Mono',monospace;
+  font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--green);border-bottom:1px solid rgba(136,176,75,0.35);
+  padding-bottom:0.35rem;margin-bottom:0.6rem;
+}
+.job{margin-bottom:0.75rem;}
+.j-date{font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--coral);}
+.j-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-weight:600;color:var(--ink);line-height:1.2;}
+.j-org{font-size:0.72rem;font-style:italic;color:var(--purple);margin-bottom:0.2rem;}
+.j-list{list-style:none;}
+.j-list li{font-size:0.67rem;line-height:1.5;color:rgba(26,10,10,0.55);padding-left:0.7rem;position:relative;margin-bottom:0.06rem;}
+.j-list li::before{content:'—';position:absolute;left:0;color:rgba(255,111,97,0.5);font-size:0.55rem;}
+.s-line{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.4rem;font-size:0.73rem;font-style:italic;color:rgba(26,10,10,0.6);}
+.s-line::before{content:'';width:14px;height:1px;background:var(--green);flex-shrink:0;}
+
+/* SKILLS */
+.sk-block{
+  padding:0.65rem 0.85rem;
+  margin-bottom:0.48rem;
+  position:relative;
+}
+.sk-block::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;
+  width:2px;
+}
+.sk-c::before{background:var(--coral);}
+.sk-p::before{background:var(--purple);}
+.sk-g::before{background:var(--green);}
+.sk-b::before{background:var(--blue);}
+.sk-bl::before{background:#e8a0a8;}
+.sk-block-bg-c{background:rgba(255,111,97,0.04);}
+.sk-block-bg-p{background:rgba(107,91,149,0.04);}
+.sk-block-bg-g{background:rgba(136,176,75,0.04);}
+.sk-block-bg-b{background:rgba(146,168,209,0.04);}
+.sk-block-bg-bl{background:rgba(247,202,201,0.07);}
+.sk-name{
+  font-family:'DM Mono',monospace;
+  font-size:0.52rem;letter-spacing:0.15em;text-transform:uppercase;
+  margin-bottom:0.32rem;
+}
+.sk-pills{display:flex;flex-wrap:wrap;gap:0.22rem;}
+.pill{
+  font-family:'DM Mono',monospace;
+  font-size:0.56rem;padding:0.12rem 0.5rem;
+  border-radius:100px;
+  letter-spacing:0.04em;
+}
+.pill-c{background:rgba(255,111,97,0.1);color:#b84d41;border:0.5px solid rgba(255,111,97,0.2);}
+.pill-p{background:rgba(107,91,149,0.1);color:#4a3478;border:0.5px solid rgba(107,91,149,0.2);}
+.pill-g{background:rgba(136,176,75,0.1);color:#4a6820;border:0.5px solid rgba(136,176,75,0.2);}
+.pill-b{background:rgba(146,168,209,0.1);color:#3a5f8a;border:0.5px solid rgba(146,168,209,0.2);}
+.pill-bl{background:rgba(232,160,168,0.12);color:#a05060;border:0.5px solid rgba(232,160,168,0.25);}
+
+/* STAT BUBBLES */
+.stat-strip{display:flex;gap:0.5rem;margin-top:0.8rem;}
+.stat-bub{
+  flex:1;padding:0.65rem 0.4rem;text-align:center;
+  border-radius:6px;
+}
+.stat-bub-n{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;line-height:1;}
+.stat-bub-l{font-family:'DM Mono',monospace;font-size:0.48rem;letter-spacing:0.06em;color:rgba(26,10,10,0.38);margin-top:0.15rem;}
+
+/* page curl */
+.curl{position:absolute;bottom:0;right:0;width:20px;height:20px;background:linear-gradient(135deg,transparent 50%,rgba(136,176,75,0.1) 50%);z-index:5;pointer-events:none;}
+</style>
+</head>
+<body>
+<div class="scene">
+<div class="book">
+
+  <div class="nav">
+    <button class="nav-btn active" onclick="goTo('about')">About</button>
+    <button class="nav-btn" onclick="goTo('resume')">Resume</button>
+    <button class="nav-btn" onclick="goTo('skills')">Work &amp; Skills</button>
+  </div>
+
+  <!-- ══ LEFT ══ -->
+  <div class="book-left">
+
+    <!-- COVER -->
+    <div class="cover" id="cover-default">
+      <div class="cover-grid"></div>
+      <div class="cover-accent"></div>
+      <div class="cover-accent2"></div>
+      <div class="cover-line"></div>
+      <div class="cover-year">2026</div>
+      <div class="cover-monogram">GM</div>
+      <div class="cover-tag" style="color:var(--green);">Portfolio</div>
+      <div class="cover-name">Gisela<br/><em>Marquez</em></div>
+      <div class="cover-rule"></div>
+      <div class="cover-sub">Operations · Strategy · Tech<br/>Houston, Texas</div>
+    </div>
+
+    <!-- LEFT / RESUME -->
+    <div class="left-inner" id="li-resume">
+      <div class="pg">
+        <div class="pi">
+          <div class="sec-eyebrow">Chapter II</div>
+          <div class="sec-title">The Journey</div>
+          <div class="sec-rule"></div>
+          <div class="hl-intro">"10+ years of turning operational chaos into streamlined, high-performing workflows."</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--purple);margin-bottom:0.7rem;">Career Highlights</div>
+          <div class="hl"><div class="hl-dot"></div><div class="hl-text">Managed 50-property portfolio, solo, end to end</div></div>
+          <div class="hl"><div class="hl-dot"></div><div class="hl-text">Built proprietary escalation system, 100% 30-min response rate</div></div>
+          <div class="hl"><div class="hl-dot"></div><div class="hl-text">Grew company social media from 0 to 20K, zero paid ads</div></div>
+          <div class="hl"><div class="hl-dot"></div><div class="hl-text">Orchestrated daily logistics for 38-truck flatbed fleet</div></div>
+          <div class="hl"><div class="hl-dot"></div><div class="hl-text">Full-Stack certified, Rice University 2023</div></div>
+          <div class="hl"><div class="hl-dot"></div><div class="hl-text">Bilingual: English and Spanish, native fluency</div></div>
+          <span class="pg-num pg-l">02</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEFT / SKILLS -->
+    <div class="left-inner" id="li-skills">
+      <div class="pg">
+        <div class="pi">
+          <div class="sec-eyebrow">Chapter III</div>
+          <div class="sec-title">Work &amp; Skills</div>
+          <div class="sec-rule"></div>
+
+          <div class="sk-block sk-c sk-block-bg-c">
+            <div class="sk-name" style="color:var(--coral);">Operations &amp; Leadership</div>
+            <div class="sk-pills">
+              <span class="pill pill-c">Property Mgmt</span>
+              <span class="pill pill-c">Process Design</span>
+              <span class="pill pill-c">Vendor Relations</span>
+              <span class="pill pill-c">Lease Negotiation</span>
+              <span class="pill pill-c">Strategic Planning</span>
+              <span class="pill pill-c">Cross-functional</span>
+            </div>
+          </div>
+
+          <div class="sk-block sk-p sk-block-bg-p">
+            <div class="sk-name" style="color:var(--purple);">Digital Marketing</div>
+            <div class="sk-pills">
+              <span class="pill pill-p">Social Media</span>
+              <span class="pill pill-p">Content Strategy</span>
+              <span class="pill pill-p">Growth Marketing</span>
+              <span class="pill pill-p">KPI Reporting</span>
+              <span class="pill pill-p">Data Analysis</span>
+            </div>
+          </div>
+
+          <div class="sk-block sk-g sk-block-bg-g">
+            <div class="sk-name" style="color:var(--green);">Logistics &amp; Dispatch</div>
+            <div class="sk-pills">
+              <span class="pill pill-g">Fleet Coordination</span>
+              <span class="pill pill-g">Real-time Ops</span>
+              <span class="pill pill-g">Route Planning</span>
+              <span class="pill pill-g">Client Liaison</span>
+            </div>
+          </div>
+
+          <div style="font-family:'Cormorant Garamond',serif;font-size:0.88rem;font-style:italic;color:var(--purple);line-height:1.7;padding:0.6rem 0.8rem;border-left:2px solid var(--blush);background:rgba(247,202,201,0.07);margin-top:0.5rem;">
+            "I don't just manage things. I build systems that run without me."
+          </div>
+          <span class="pg-num pg-l">04</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /book-left -->
+
+  <!-- SPINE -->
+  <div class="spine"><span class="spine-text">Gisela Marquez · Portfolio · 2026</span></div>
+
+  <!-- ══ RIGHT ══ -->
+  <div class="book-right">
+    <div class="back-cover"><div class="back-cover-text">2026</div></div>
+    <div class="pages-stack">
+
+      <!-- SKILLS right -->
+      <div class="page-sheet" id="ps-skills" style="z-index:11;">
+        <div class="page-front pg">
+          <div class="pi">
+            <div class="sec-eyebrow">Chapter III, continued</div>
+            <div class="sec-title">Tools &amp; Tech</div>
+            <div class="sec-rule"></div>
+
+            <div class="sk-block sk-b sk-block-bg-b">
+              <div class="sk-name" style="color:var(--blue);">Full-Stack Development</div>
+              <div class="sk-pills">
+                <span class="pill pill-b">JavaScript</span><span class="pill pill-b">React</span>
+                <span class="pill pill-b">Node.js</span><span class="pill pill-b">HTML5</span>
+                <span class="pill pill-b">CSS3</span><span class="pill pill-b">MySQL</span>
+                <span class="pill pill-b">MongoDB</span><span class="pill pill-b">Git</span>
+              </div>
+            </div>
+
+            <div class="sk-block sk-bl sk-block-bg-bl">
+              <div class="sk-name" style="color:#c47a85;">Finance &amp; Admin</div>
+              <div class="sk-pills">
+                <span class="pill pill-bl">QuickBooks</span>
+                <span class="pill pill-bl">Budget Tracking</span>
+                <span class="pill pill-bl">Record Keeping</span>
+                <span class="pill pill-bl">Vendor Accounts</span>
+                <span class="pill pill-bl">Invoicing</span>
+              </div>
+            </div>
+
+            <div class="sk-block sk-g sk-block-bg-g">
+              <div class="sk-name" style="color:var(--green);">Languages &amp; Certifications</div>
+              <div class="sk-pills">
+                <span class="pill pill-g">English, Native</span>
+                <span class="pill pill-g">Spanish, Native</span>
+                <span class="pill pill-g">Rice Univ. Full-Stack 2023</span>
+              </div>
+            </div>
+
+            <div class="stat-strip">
+              <div class="stat-bub" style="background:rgba(255,111,97,0.07);border:1px solid rgba(255,111,97,0.18);">
+                <div class="stat-bub-n" style="color:var(--coral);">10+</div>
+                <div class="stat-bub-l">yrs exp</div>
+              </div>
+              <div class="stat-bub" style="background:rgba(107,91,149,0.07);border:1px solid rgba(107,91,149,0.18);">
+                <div class="stat-bub-n" style="color:var(--purple);">50</div>
+                <div class="stat-bub-l">properties</div>
+              </div>
+              <div class="stat-bub" style="background:rgba(136,176,75,0.07);border:1px solid rgba(136,176,75,0.18);">
+                <div class="stat-bub-n" style="color:var(--green);">20K</div>
+                <div class="stat-bub-l">followers</div>
+              </div>
+              <div class="stat-bub" style="background:rgba(146,168,209,0.07);border:1px solid rgba(146,168,209,0.18);">
+                <div class="stat-bub-n" style="color:var(--blue);">100%</div>
+                <div class="stat-bub-l">response</div>
+              </div>
+            </div>
+
+            <div class="curl"></div>
+            <span class="pg-num pg-r">05</span>
+          </div>
+        </div>
+        <div class="page-back"></div>
+      </div>
+
+      <!-- RESUME right -->
+      <div class="page-sheet" id="ps-resume" style="z-index:12;">
+        <div class="page-front pg">
+          <div class="pi" style="padding:2rem 2.2rem 1.8rem 2.4rem;">
+            <div class="sec-eyebrow">Chapter II</div>
+            <div class="sec-title" style="font-size:2rem;margin-bottom:0.5rem;">Resume</div>
+            <div class="sec-rule" style="margin-bottom:0.7rem;"></div>
+            <div class="r2col">
+              <div>
+                <div class="col-label">Experience</div>
+                <div class="job">
+                  <div class="j-date">Aug 2023 to Present</div>
+                  <div class="j-title">Head of Operations</div>
+                  <div class="j-org">Surge · Houston, TX</div>
+                  <ul class="j-list">
+                    <li>Managed 50-property portfolio end to end</li>
+                    <li>Built escalation system, 100% 30-min response</li>
+                    <li>Led cross-functional property and vendor teams</li>
+                  </ul>
+                </div>
+                <div class="job">
+                  <div class="j-date">Dec 2020 to Feb 2022</div>
+                  <div class="j-title">Social Media Mgr and Analyst</div>
+                  <div class="j-org">Good Neighbor · Houston, TX</div>
+                  <ul class="j-list">
+                    <li>Grew following from 0 to 20K organically</li>
+                    <li>Audited digital strategy, adopted by leadership</li>
+                  </ul>
+                </div>
+                <div class="job">
+                  <div class="j-date">Mar 2018 to Aug 2020</div>
+                  <div class="j-title">Administrative Assistant</div>
+                  <div class="j-org">Pampered Pet Inn · Houston, TX</div>
+                  <ul class="j-list">
+                    <li>Managed workflows and client communications</li>
+                    <li>Financial records via QuickBooks</li>
+                  </ul>
+                </div>
+                <div class="job">
+                  <div class="j-date">Jan 2014 to Mar 2018</div>
+                  <div class="j-title">Dispatcher</div>
+                  <div class="j-org">Texas Transteel · Houston, TX</div>
+                  <ul class="j-list">
+                    <li>Orchestrated 38-truck flatbed fleet logistics</li>
+                    <li>Real-time driver and job site coordination</li>
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <div class="col-label">Education</div>
+                <div class="job">
+                  <div class="j-date">Aug 2022 to Jan 2023</div>
+                  <div class="j-title">Full-Stack Web Dev</div>
+                  <div class="j-org">Rice University · Houston, TX</div>
+                  <ul class="j-list"><li>Cert. ID: 69423461 · Verified</li></ul>
+                </div>
+                <div class="job">
+                  <div class="j-date">Aug 2012 to May 2016</div>
+                  <div class="j-title">High School Diploma</div>
+                  <div class="j-org">Sam Rayburn High School</div>
+                </div>
+                <div style="margin-top:0.7rem;">
+                  <div class="col-label">Core Skills</div>
+                  <div class="s-line">Operations Management</div>
+                  <div class="s-line">Property Management</div>
+                  <div class="s-line">Strategic Planning</div>
+                  <div class="s-line">Digital Marketing</div>
+                  <div class="s-line">Full-Stack Development</div>
+                </div>
+              </div>
+            </div>
+            <div class="curl"></div>
+            <span class="pg-num pg-r">03</span>
+          </div>
+        </div>
+        <div class="page-back"></div>
+      </div>
+
+      <!-- ABOUT right -->
+      <div class="page-sheet" id="ps-about" style="z-index:13;">
+        <div class="page-front pg">
+          <div class="pi">
+            <div class="sec-eyebrow">Chapter I</div>
+            <div class="sec-title">About Me</div>
+            <div class="sec-rule"></div>
+            <div class="big-quote">"A versatile operations leader who bridges the gap between strategy and execution."</div>
+            <p class="body">I'm Gisela, Houston-based, bilingual, and unstoppable. With over a decade of experience spanning property management, digital marketing, logistics dispatch, and full-stack web development, I turn complex operational challenges into streamlined, high-performing systems.</p>
+            <p class="body">Whether overseeing 50 properties, growing a following to 20K without a dollar in ads, or coding a custom escalation system from scratch, I bring sharp strategy and hands-on execution to everything I do.</p>
+            <p class="body">Bilingual. Based in Houston, TX. Open to new opportunities.</p>
+            <div class="fact-row">
+              <div class="fact"><div class="fact-k">Location</div><div class="fact-v">Houston, Texas</div></div>
+              <div class="fact"><div class="fact-k">Languages</div><div class="fact-v">English and Spanish</div></div>
+              <div class="fact"><div class="fact-k">Email</div><div class="fact-v">marquezgisela5@gmail.com</div></div>
+              <div class="fact"><div class="fact-k">LinkedIn</div><div class="fact-v">linkedin.com/in/giselamarquez</div></div>
+            </div>
+            <div class="curl"></div>
+            <span class="pg-num pg-r">01</span>
+          </div>
+        </div>
+        <div class="page-back"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+const cover    = document.getElementById('cover-default');
+const psAbout  = document.getElementById('ps-about');
+const psResume = document.getElementById('ps-resume');
+const psSkills = document.getElementById('ps-skills');
+const liResume = document.getElementById('li-resume');
+const liSkills = document.getElementById('li-skills');
+
+function applyState(s) {
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>
+    b.classList.toggle('active',['about','resume','skills'][i]===s));
+  cover.style.display='none';
+  liResume.style.display='none';
+  liSkills.style.display='none';
+  psAbout.classList.remove('flipped');
+  psResume.classList.remove('flipped');
+  psSkills.classList.remove('flipped');
+  if(s==='about'){cover.style.display='flex';}
+  else if(s==='resume'){liResume.style.display='block';psAbout.classList.add('flipped');}
+  else if(s==='skills'){liSkills.style.display='block';psAbout.classList.add('flipped');psResume.classList.add('flipped');}
+}
+function goTo(s){applyState(s);}
+applyState('about');
+</script>
+</body>
+</html>
